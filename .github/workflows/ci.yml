@@ -1,0 +1,29 @@
+name: "CI"
+on: ["push", "pull_request"]
+
+jobs:
+  ci:
+    name: "Run CI"
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Go
+        uses: actions/setup-go@v5
+      - name: Install dependencies
+        run: go get .
+
+      - name: Formatting
+        run: gofmt -l -w .
+        
+      - name: Vet packages
+        run: go vet
+
+      - name: Staticcheck
+        uses: dominikh/staticcheck-action@v1
+
+      - name: Test with Go
+        run: go test -coverprofile=coverage.out ./folder
+
+      - name: Test coverage
+        run: go tool cover -func=coverage.out
