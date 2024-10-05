@@ -3,7 +3,7 @@ package folder
 import "github.com/gofrs/uuid"
 
 func filterFolders(folders []Folder, predicate func(Folder) bool) []Folder {
-	var result []Folder
+	result := []Folder{}
 	for _, f := range folders {
 		if predicate(f) {
 			result = append(result, f)

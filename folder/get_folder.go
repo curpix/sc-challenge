@@ -12,17 +12,7 @@ func GetAllFolders() []Folder {
 }
 
 func (f *driver) GetFoldersByOrgID(orgID uuid.UUID) []Folder {
-	folders := f.folders
-
-	res := []Folder{}
-	for _, f := range folders {
-		if f.OrgId == orgID {
-			res = append(res, f)
-		}
-	}
-
-	return res
-
+	return findFoldersByOrgId(f.folders, orgID)
 }
 
 func (f *driver) GetAllChildFolders(orgID uuid.UUID, name string) ([]Folder, error) {
