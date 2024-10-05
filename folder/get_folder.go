@@ -28,12 +28,15 @@ func (f *driver) GetAllChildFolders(orgID uuid.UUID, name string) ([]Folder, err
 		return []Folder{}, errors.New("folder does not exist in the specified organization")
 	}
 
-	var parentFolder Folder = orgSameNamedFolders[0]
-
 	res := []Folder{}
-	for _, f := range f.folders {
-		if isChildFolder(&parentFolder, &f) {
-			res = append(res, f)
+	addedFilePaths := map[string]bool{}
+	for _, parent := range orgSameNamedFolders {
+		for _, f := range f.folders {
+			_, alreadyAdded := addedFilePaths[f.Paths]
+			if !alreadyAdded && isChildFolder(&parent, &f) {
+				res = append(res, f)
+				addedFilePaths[f.Paths] = true
+			}
 		}
 	}
 

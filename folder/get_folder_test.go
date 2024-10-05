@@ -150,6 +150,39 @@ func Test_folder_GetAllChildFolders(t *testing.T) {
 			want: []folder.Folder{},
 		},
 		{
+			testName: "Same file name in different paths, all children are returned",
+			orgID:    validOrgId,
+			name:     "c1",
+			folders: []folder.Folder{
+				{Name: "fold", OrgId: validOrgId, Paths: "fold"},
+				{Name: "new-fold", OrgId: validOrgId, Paths: "new-fold"},
+				{Name: "c1", OrgId: validOrgId, Paths: "fold.c1"},
+				{Name: "c1", OrgId: validOrgId, Paths: "new-fold.c1"},
+				{Name: "child-path-1", OrgId: validOrgId, Paths: "fold.c1.child-path-1"},
+				{Name: "child-path-2", OrgId: validOrgId, Paths: "new-fold.c1.child-path-2"},
+			},
+			want: []folder.Folder{
+				{Name: "child-path-1", OrgId: validOrgId, Paths: "fold.c1.child-path-1"},
+				{Name: "child-path-2", OrgId: validOrgId, Paths: "new-fold.c1.child-path-2"},
+			},
+		},
+		{
+			testName: "Same file name in same parent path, returns aren't duplicated",
+			orgID:    validOrgId,
+			name:     "fold",
+			folders: []folder.Folder{
+				{Name: "fold", OrgId: validOrgId, Paths: "fold"},
+				{Name: "c1", OrgId: validOrgId, Paths: "fold.c1"},
+				{Name: "fold", OrgId: validOrgId, Paths: "fold.c1.fold"},
+				{Name: "c2", OrgId: validOrgId, Paths: "fold.c1.fold.c2"},
+			},
+			want: []folder.Folder{
+				{Name: "c1", OrgId: validOrgId, Paths: "fold.c1"},
+				{Name: "fold", OrgId: validOrgId, Paths: "fold.c1.fold"},
+				{Name: "c2", OrgId: validOrgId, Paths: "fold.c1.fold.c2"},
+			},
+		},
+		{
 			testName: "Error: Folder does not exist",
 			orgID:    validOrgId,
 			name:     "missing",
