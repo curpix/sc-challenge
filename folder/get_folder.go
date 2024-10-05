@@ -12,17 +12,17 @@ func GetAllFolders() []Folder {
 }
 
 func (f *driver) GetFoldersByOrgID(orgID uuid.UUID) []Folder {
-	return findFoldersByOrgId(f.folders, orgID)
+	return findFoldersByOrgId(&f.folders, orgID)
 }
 
 func (f *driver) GetAllChildFolders(orgID uuid.UUID, name string) ([]Folder, error) {
-	var sameNamedFolders []Folder = findFoldersByName(f.folders, name)
+	var sameNamedFolders []Folder = findFoldersByName(&f.folders, name)
 
 	if len(sameNamedFolders) == 0 {
 		return []Folder{}, errors.New("folder does not exist")
 	}
 
-	var orgSameNamedFolders []Folder = findFoldersByOrgId(sameNamedFolders, orgID)
+	var orgSameNamedFolders []Folder = findFoldersByOrgId(&sameNamedFolders, orgID)
 
 	if len(orgSameNamedFolders) == 0 {
 		return []Folder{}, errors.New("folder does not exist in the specified organization")
@@ -32,7 +32,7 @@ func (f *driver) GetAllChildFolders(orgID uuid.UUID, name string) ([]Folder, err
 
 	res := []Folder{}
 	for _, f := range f.folders {
-		if isChildFolder(parentFolder, f) {
+		if isChildFolder(&parentFolder, &f) {
 			res = append(res, f)
 		}
 	}
@@ -40,7 +40,7 @@ func (f *driver) GetAllChildFolders(orgID uuid.UUID, name string) ([]Folder, err
 	return res, nil
 }
 
-func isChildFolder(parent Folder, child Folder) bool {
+func isChildFolder(parent *Folder, child *Folder) bool {
 	return (child.OrgId == parent.OrgId &&
 		child.Paths != parent.Paths && strings.HasPrefix(child.Paths, parent.Paths))
 }
