@@ -139,6 +139,17 @@ func Test_folder_GetAllChildFolders(t *testing.T) {
 			},
 		},
 		{
+			testName: "Child of same file name, but different organisation - not returned",
+			orgID:    validOrgId,
+			name:     "fold",
+			folders: []folder.Folder{
+				{Name: "fold", OrgId: validOrgId, Paths: "fold"},
+				{Name: "fold", OrgId: uuid.FromStringOrNil("5e35ff8f-21dd-4ed5-b861-ba93dbcdadc3"), Paths: "fold"},
+				{Name: "c1", OrgId: uuid.FromStringOrNil("5e35ff8f-21dd-4ed5-b861-ba93dbcdadc3"), Paths: "fold.c1"},
+			},
+			want: []folder.Folder{},
+		},
+		{
 			testName: "Error: Folder does not exist",
 			orgID:    validOrgId,
 			name:     "missing",
