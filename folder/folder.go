@@ -24,7 +24,7 @@ type driver struct {
 	folders []Folder
 }
 
-// Creates a driver to execute utility functions
+// NewDriver creates a driver to execute utility functions
 func NewDriver(folders []Folder) IDriver {
 	return &driver{
 		folders: folders,
