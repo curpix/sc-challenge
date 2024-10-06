@@ -25,5 +25,8 @@ jobs:
       - name: Test with Go
         run: go test -coverprofile=coverage.out ./folder
 
+      - name: Filter static.go out from coverage
+        run: grep -v "folder/static.go" coverage.out > filtered_coverage.out
+
       - name: Test coverage
-        run: go tool cover -func=coverage.out
+        run: go tool cover -func=filtered_coverage.out
