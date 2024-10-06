@@ -1,6 +1,10 @@
 package folder
 
-import "github.com/gofrs/uuid"
+import (
+	"strings"
+
+	"github.com/gofrs/uuid"
+)
 
 func filterFolders(folders *[]Folder, predicate func(Folder) bool) []Folder {
 	result := []Folder{}
@@ -22,4 +26,9 @@ func findFoldersByOrgId(folders *[]Folder, orgId uuid.UUID) []Folder {
 	return filterFolders(folders, func(f Folder) bool {
 		return f.OrgId == orgId
 	})
+}
+
+func isChildFolder(parent *Folder, child *Folder) bool {
+	return (child.OrgId == parent.OrgId &&
+		child.Paths != parent.Paths && strings.HasPrefix(child.Paths, parent.Paths))
 }
