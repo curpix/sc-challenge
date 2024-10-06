@@ -2,7 +2,6 @@ package folder
 
 import (
 	"errors"
-	"strings"
 
 	"github.com/gofrs/uuid"
 )
@@ -41,9 +40,4 @@ func (f *driver) GetAllChildFolders(orgID uuid.UUID, name string) ([]Folder, err
 	}
 
 	return res, nil
-}
-
-func isChildFolder(parent *Folder, child *Folder) bool {
-	return (child.OrgId == parent.OrgId &&
-		child.Paths != parent.Paths && strings.HasPrefix(child.Paths, parent.Paths))
 }
