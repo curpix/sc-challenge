@@ -46,11 +46,13 @@ func (f *driver) MoveFolder(name string, dst string) ([]Folder, error) {
 	return resultAfterMove, nil
 }
 
+// isMovedFolder checks if the folder needs to be moved, as it is part of srcFolder
 func isMovedFolder(folder *Folder, srcFolder *Folder) bool {
 	return srcFolder.Name == folder.Name || // Refer to assumption
 		isChildFolder(srcFolder, folder)
 }
 
+// getNewMovedFolder creates a new folder with the path adjusted after being moved to dstFolder
 func getNewMovedFolder(folder Folder, srcFolder Folder, dstFolder Folder) Folder {
 	var relativePathFromSrc, _ = strings.CutPrefix(folder.Paths, srcFolder.Paths)
 	var newPath string = dstFolder.Paths + "." + srcFolder.Name
