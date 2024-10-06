@@ -13,6 +13,9 @@ type IDriver interface {
 	// component 2
 	// Implement the following methods:
 	// MoveFolder moves a folder to a new destination.
+	// Assumption: Names are unique, as cannot distinguish between different paths.
+	// E.g. We have a, c.a and d. moveFolder("d", "a") is ambiguous, as we don't know
+	// which a to move to.
 	MoveFolder(name string, dst string) ([]Folder, error)
 }
 
