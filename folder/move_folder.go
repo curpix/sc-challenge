@@ -54,7 +54,7 @@ func isMovedFolder(folder *Folder, srcFolder *Folder) bool {
 
 // getNewMovedFolder creates a new folder with the path adjusted after being moved to dstFolder
 func getNewMovedFolder(folder Folder, srcFolder Folder, dstFolder Folder) Folder {
-	var relativePathFromSrc, _ = strings.CutPrefix(folder.Paths, srcFolder.Paths)
+	var relativePathFromSrc = strings.TrimPrefix(folder.Paths, srcFolder.Paths)
 	var newPath string = dstFolder.Paths + "." + srcFolder.Name
 	if relativePathFromSrc != "" {
 		newPath += relativePathFromSrc
